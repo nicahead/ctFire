@@ -1,0 +1,19 @@
+#stages:
+#  - build
+#  - run
+#
+#build:
+#  stage: build
+#  script:
+#    - /usr/local/maven/apache-maven-3.5.3/bin/mvn clean package
+#    - cp target/ctFire-web-backend-1.0.0-SNAPSHOT.jar docker
+#    - cd docker
+#    - docker build -t 192.168.110.132:5000/ctfire-web-backend .
+#
+#run:
+#  stage: run
+#  script:
+#    - cd docker
+#    - docker-compose down
+#    - docker-compose up -d
+#

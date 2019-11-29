@@ -1,0 +1,61 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body th:fragment="menu">
+<aside class="main-sidebar">
+    <section class="sidebar">
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">功能菜单</li>
+            <th:block th:if="${user.role==0}">
+                <li class="active treeview">
+                    <a href="#">
+                        <i class="fa fa-users"></i> <span>用户管理</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="javascript:void(0);" id="btnUserList" onclick="show(this.id)"><i
+                                class="fa fa-circle-o"></i> 用户列表</a></li>
+                        <li><a href="javascript:void(0);" id="btnUserForm" onclick="show(this.id)"><i
+                                class="fa fa-circle-o"></i> 新增用户</a></li>
+                    </ul>
+                </li>
+            </th:block>
+            <li class="active treeview">
+                <a href="#">
+                    <i class="fa fa-book"></i> <span>设备管理</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="javascript:void(0);" id="btnDeviceList" onclick="show(this.id)"><i
+                            class="fa fa-circle-o"></i> 设备列表</a></li>
+                    <li><a href="javascript:void(0);" id="btnDeviceForm" onclick="show(this.id)"><i
+                            class="fa fa-circle-o"></i> 新增设备</a></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+</aside>
+<script>
+    function show(id) {
+        var iFrame = document.getElementById("iFrame");
+        if (id == "btnUserList") {
+            iFrame.src = "http://localhost:8769/backend/user/list";
+        } else if (id == "btnUserForm") {
+            iFrame.src = "http://localhost:8769/backend/user/form";
+        } else if (id == "btnDeviceList") {
+            iFrame.src = "http://localhost:8769/backend/device/list";
+        } else if (id == "btnDeviceForm") {
+            iFrame.src = "http://localhost:8769/backend/device/form";
+        }
+    }
+</script>
+</body>
+</html>

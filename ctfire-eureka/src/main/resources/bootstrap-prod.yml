@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    config:
+      uri: http://192.168.110.138:8888
+      name: ctFire-server-eureka,ctFire-client-zipkin,ctFire-client-admin
+      label: master
+      profile: prod

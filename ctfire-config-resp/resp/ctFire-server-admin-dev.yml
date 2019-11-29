@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: ctFire-server-admin
+
+server:
+  port: 8084

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 使用动态代理开发DAO，namespace必须和Mapper接口类路径一致 -->
+<mapper namespace="com.nic.ctFire.common.service.mapper.TbDeviceMapper">
+
+    <!--添加设备-->
+    <insert id="insert" parameterType="com.nic.ctFire.common.domain.TbDevice">
+      insert into tb_device(id,name,server,port,located,max_voltage,min_voltage,max_current,min_current,max_temper,min_temper) value
+        (#{id},#{name},#{server},#{port},#{located},#{maxVoltage},#{minVoltage},#{maxCurrent},#{minCurrent},#{maxTemper},#{minTemper} )
+    </insert>
+
+    <!--删除设备-->
+    <update id="delete" parameterType="String">
+        update tb_device
+        set state = 0
+        where
+        id = #{id}
+    </update>
+
+    <!--批量删除设备-->
+    <update id="deleteMulti">
+        update tb_device
+        set state = 0
+        where id in
+        <!-- foreach标签，进行遍历 -->
+        <!-- collection：要遍历的集合(List<?>对象默认用list代替作为键，数组对象有array代替作为键，Map对象没有默认的键) -->
+        <!-- item：遍历的项目，可以随便写，，但是和后面的#{}里面要一致 -->
+        <!-- open：在前面添加的sql片段 -->
+        <!-- close：在结尾处添加的sql片段 -->
+        <!-- separator：指定遍历的元素之间使用的分隔符 -->
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--修改设备-->
+    <update id="update" parameterType="com.nic.ctFire.common.domain.TbDevice">
+        update tb_device
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="server != null and server != ''">
+                server = #{server},
+            </if>
+            <if test="port != null">
+                port = #{port},
+            </if>
+            <if test="located != null and located != ''">
+                located = #{located},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="maxVoltage != null">
+                max_voltage = #{maxVoltage},
+            </if>
+            <if test="minVoltage != null">
+                min_voltage = #{minVoltage},
+            </if>
+            <if test="maxCurrent != null">
+                max_current = #{maxCurrent},
+            </if>
+            <if test="minCurrent != null">
+                min_current = #{minCurrent},
+            </if>
+            <if test="maxTemper != null">
+                max_temper = #{maxTemper},
+            </if>
+            <if test="minTemper != null">
+                min_temper = #{minTemper},
+            </if>
+            <if test="switc != null">
+                switc = #{switc},
+            </if>
+        </set>
+        where
+        id = #{id}
+    </update>
+
+    <!--根据id查询设备-->
+    <select id="getById" parameterType="String" resultType="com.nic.ctFire.common.domain.TbDevice">
+        select * from tb_device
+        where
+        id = #{id} and state != 0
+    </select>
+
+    <!--查询所有设备-->
+    <select id="selectAll" resultType="com.nic.ctFire.common.domain.TbDevice">
+        select * from tb_device where state != 0
+    </select>
+
+    <!--条件查询代码块-->
+    <sql id="conditions">
+      <where>
+        <if test="entity != null">
+            <if test="entity.name != null and entity.name != ''">
+                name like concat('%',#{entity.name},'%')
+            </if>
+            <choose>
+                <when test="entity.state != null and entity.state != -1">
+                    and state = #{entity.state}
+                </when>
+                <otherwise>
+                    and state != 0
+                </otherwise>
+            </choose>
+        </if>
+      </where>
+    </sql>
+
+    <!--分页查询设备-->
+    <select id="page" resultType="com.nic.ctFire.common.domain.TbDevice">
+        select * from tb_device
+        <include refid="conditions"></include>
+        limit #{start},#{length}
+    </select>
+
+    <!--查询总数据条数-->
+    <select id="count" parameterType="com.nic.ctFire.common.domain.TbDevice" resultType="int">
+        select count(*) from tb_device
+        <include refid="conditions"></include>
+    </select>
+
+</mapper>

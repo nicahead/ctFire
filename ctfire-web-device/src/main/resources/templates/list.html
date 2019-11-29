@@ -1,0 +1,157 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ctFire>设备管理</title>
+    <th:block th:include="includes/head :: head"></th:block>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<section class="content-header">
+    <h1>
+        设备管理
+        <small>设备列表</small>
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <th:block th:if="${baseResult!=null }">
+                        <div class="alert alert-success alert-dismissible" style="margin:15px 0 0 0">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                                &times;
+                            </button>
+                            <span th:text="${baseResult.success }"></span>
+                        </div>
+                    </th:block>
+                    <div class="row" style="padding: 10px 0 0 15px">
+                        <a type="button" href="/form" class="btn btn-sm btn-default"><i
+                                class="fa fa-plus-square"></i>添加</a>
+                        <button type="button" onclick="App.deleteMulti('delete')"
+                                class="btn btn-sm btn-default"><i class="fa fa-trash"></i>批量删除
+                        </button>
+                        <button onclick="search()" class="btn btn-sm btn-default"
+                                style="float:right;margin-right: 10px;"><i
+                                class="fa fa-search"></i>搜索
+                        </button>
+                        <div class="input-group input-group-sm"
+                             style="width: 150px;float:right; margin-right: 10px;">
+                            <select name="state" id="state" class="form-control">
+                                <option value="-1">全部</option>
+                                <option value="1">正常</option>
+                                <option value="2">关机</option>
+                            </select>
+                        </div>
+                        <div class="input-group input-group-sm"
+                             style="width: 150px;float:right;margin-right: 10px;">
+                            <input type="text" name="name" id="name" class="form-control pull-right"
+                                   placeholder="name">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover display" id="dataTable">
+                        <thead>
+                        <tr>
+                            <th><input type="checkbox" class="minimal icheck_master"/></th>
+                            <th>设备名称</th>
+                            <th>设备IP</th>
+                            <th>设备端口</th>
+                            <th>设备位置</th>
+                            <th>工作状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+<th:block th:include="includes/foot :: foot"></th:block>
+<script>
+    var _dataTable;
+    $(function () {
+        var _columns = [
+            {
+                "data": function (row, type, val, meta) {
+                    if (row.id != 1)
+                        return '<input id=' + row.id + ' type="checkbox" class="minimal">';
+                    return "";
+                }
+            },
+            {"data": "name"},
+            {"data": "server"},
+            {"data": "port"},
+            {"data": "located"},
+            {
+                "data": function (row, type, val, meta) {
+                    if (row.state == 1)
+                        return '正常';
+                    else
+                        return '关机';
+                }
+            },
+            {
+                "data": function (row, type, val, meta) {
+                    var del_style = "";
+                    var edit_style = "";
+                    var close_style = "disabled=true";
+                    var deleteUrl = "delete";
+                    if (row.state == 1) {
+                        close_style = "";
+                        del_style = "disabled=true";
+                    }
+                    return '<a href="/form?id=' + row.id + '" type="button" class="btn btn-sm btn-primary ' + edit_style + '"><i class="fa fa-edit"></i>编辑</a>&nbsp;&nbsp;' +
+                        '<a href="/chat?did='+ row.id + '" class="btn btn-sm btn-success "><i class="fa fa-edit"></i>数据</a>&nbsp;&nbsp;' +
+                        '<button onclick="closeOp(\'' + row.id + '\')" class="btn btn-sm btn-warning" ' + close_style + '><i class="fa fa-edit"></i>关闭</button>&nbsp;&nbsp;' +
+                        '<button onclick="App.deleteSingle(\'' + deleteUrl + '\', \'' + row.id + '\')" class="btn btn-sm btn-danger" ' + del_style + ' ><i class="fa fa-trash-o"></i>删除</button>';
+                }
+            }
+        ];
+        _dataTable = App.initDataTables("/devicePage", _columns);
+    });
+
+    function search() {
+        var param = {
+            "name": $("#name").val(),
+            "state": $("#state").val()
+        }
+        _dataTable.settings()[0].ajax.data = param;
+        _dataTable.ajax.reload();
+    };
+
+    function closeOp(id) {
+        if (window.confirm('确定关闭该设备吗？')) {
+            $.ajax({
+                "url": "/close",
+                "type": "GET",
+                "data": {"id": id},
+                "dataType": "JSON",
+                "success": function (data) {
+                    // 请求成功
+                    if (data.success.endsWith("成功")) {
+                        // 刷新页面
+                        alert("关闭成功");
+                        window.location.reload();
+                    }
+                    // 请求失败
+                    else {
+                        alert("关闭失败，请稍后重试");
+                        window.location.reload();
+                    }
+                }
+            });
+        } else {
+            return false;
+        }
+    };
+</script>
+</body>
+</html>

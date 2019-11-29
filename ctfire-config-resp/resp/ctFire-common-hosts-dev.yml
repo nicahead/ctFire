@@ -1,0 +1,7 @@
+hosts:
+  sso: http://localhost:8503/
+  cdn: http://192.168.110.135:81
+  user: http://localhost:8601/
+  device: http://localhost:8602/
+  backend: http://localhost:8603/
+  data: http://localhost:8604/

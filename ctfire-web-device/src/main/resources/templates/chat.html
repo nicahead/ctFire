@@ -1,0 +1,99 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ctFire>数据监控</title>
+    <th:block th:include="includes/head :: head"></th:block>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<section class="content-header">
+    <h1>
+        数据监控
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                    <div class="row" style="padding: 10px 0 0 15px">
+                        <span>设备ID:</span><span id="did" th:text="${did}"></span>
+                        <button onclick="search()" class="btn btn-sm btn-default"
+                                style="float:right;margin-right: 10px;"><i
+                                class="fa fa-search"></i>搜索
+                        </button>
+                        <div class="input-group input-group-sm"
+                             style="width: 150px;float:right; margin-right: 10px;">
+                            <select name="state" id="state" class="form-control">
+                                <option value="-1">全部</option>
+                                <option value="1">正常</option>
+                                <option value="2">异常</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover display" id="dataTable">
+                        <thead>
+                        <tr>
+                            <th>时间</th>
+                            <th>电压值</th>
+                            <th>电流值</th>
+                            <th>温度</th>
+                            <th>状态</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</section>
+<th:block th:include="includes/foot :: foot"></th:block>
+<script>
+    var _dataTable;
+    $(function () {
+        var _columns = [
+            {
+                "data": function (row, type, val, meta) {
+                    if (row.created != null)
+                        return moment(row.created).format("YYYY-MM-DD HH:mm:ss");
+                    return "";
+                }
+            },
+            {"data": "voltage"},
+            {"data": "current"},
+            {"data": "temper"},
+            {
+                "data": function (row, type, val, meta) {
+                    if (row.state == 1)
+                        return '正常';
+                    else
+                        return '异常';
+                }
+            }
+        ];
+        _dataTable = App.initDataTables("/dataPage", _columns);
+        var param = {
+            "did": $("#did").text()
+        }
+        _dataTable.settings()[0].ajax.data = param;
+        _dataTable.ajax.reload();
+    });
+
+    function search() {
+        var param = {
+            "did": $("#did").text(),
+            "state": $("#state").val()
+        }
+        _dataTable.settings()[0].ajax.data = param;
+        _dataTable.ajax.reload();
+    }
+</script>
+</body>
+</html>

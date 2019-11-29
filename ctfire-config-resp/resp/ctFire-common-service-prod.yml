@@ -1,0 +1,9 @@
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    cache-enabled: true  #开启二级缓存
+    map-underscore-to-camel-case: true  #开启驼峰转换
+
+logging:
+  level:
+     com.nic.ctFire.common.service.mapper : debug  #打印sql语句

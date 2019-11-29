@@ -1,0 +1,13 @@
+version: '3.1'
+services:
+  ctfire-config:
+    restart: always
+    image: 192.168.110.132:5000/ctfire-config
+    container_name: ctfire-config
+    ports:
+      - 8888:8888
+    networks:
+      - config_network
+
+networks:
+  config_network:

@@ -1,0 +1,13 @@
+version: '3.1'
+services:
+  ctfire-eureka:
+    restart: always
+    image: 192.168.110.132:5000/ctfire-eureka
+    container_name: ctfire-eureka
+    ports:
+      - 8761:8761
+    networks:
+      - eureka_network
+
+networks:
+  eureka_network:

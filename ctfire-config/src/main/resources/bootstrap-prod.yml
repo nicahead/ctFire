@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: ctFire-config
+  boot:
+    admin:
+      client:
+        url: http://192.168.110.138:8084
+  cloud:
+    config:
+      label: master
+      server:
+        git:
+          uri: http://192.168.110.134:8080/ctFire/ctfire-config-resp.git
+          search-paths: resp
+          username: 1336283852@qq.com
+          password: nc970728
+  zipkin:
+    base-url: http://192.168.110.138:9411
+
+server:
+  port: 8888
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.110.138:8761/eureka/
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: health,info

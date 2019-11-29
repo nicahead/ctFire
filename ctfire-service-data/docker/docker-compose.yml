@@ -1,0 +1,13 @@
+version: '3.1'
+services:
+  ctfire-service-sso:
+    restart: always
+    image: 192.168.110.132:5000/ctfire-service-data
+    container_name: ctfire-service-data
+    ports:
+      - 8505:8505
+    networks:
+      - service_data_network
+
+networks:
+  service_data_network:

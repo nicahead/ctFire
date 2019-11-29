@@ -1,0 +1,99 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ctFire>用户编辑</title>
+    <th:block th:include="includes/head :: head"></th:block>
+</head>
+<!--<body class="hold-transition skin-blue sidebar-mini" onload="setSelect(${editUser.role})">-->
+<body class="hold-transition skin-blue sidebar-mini" th:onload="'setSelect('+${editUser.role}+')'">
+<section class="content-header">
+    <h1>
+        用户管理
+        <small th:text="${editUser != null and editUser.id != null ? '编辑用户' : '新增用户'}"></small>
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+            <th:block th:if="${baseResult!=null }">
+                <div class="alert alert-danger alert-dismissible" style="margin:15px 0 0 0">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                        &times;
+                    </button>
+                    <span th:text="${baseResult.success }"></span>
+                </div>
+            </th:block>
+            <form action="/save" method="post" class="form-horizontal" th:object="${editUser}">
+                <input name="id" th:value="*{id}" type="hidden">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="inputUsername3" class="col-sm-2 control-label">用户名(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="username" class="form-control"
+                                   id="inputUsername3" th:value="*{username}"
+                                   placeholder="Username">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <th:block th:if="${editUser.id != '' && editUser.id != null}">
+                            <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+                        </th:block>
+                        <th:block th:if="${editUser.id == ''|| editUser.id == null}">
+                            <label for="inputPassword3" class="col-sm-2 control-label">密码(*)</label>
+                        </th:block>
+                        <div class="col-sm-10">
+                            <input type="password" name="password" class="form-control" id="inputPassword3"
+                                   placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class="col-sm-2 control-label">邮箱(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="email" class="form-control"
+                                   id="inputEmail3" placeholder="Email" th:value="*{email}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputRole" class="col-sm-2 control-label">角色</label>
+                        <div class="col-sm-10">
+                            <select name="role" class="form-control" id="inputRole">
+                                <option value="0">超级管理员</option>
+                                <option value="1">普通管理员</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="button" class="btn btn-default" onclick="history.go(-1)">取消</button>
+                    <button type="submit" class="btn btn-info pull-right">提交</button>
+                </div>
+                <!-- /.box-footer -->
+            </form>
+        </div>
+    </div>
+</section>
+<th:block th:include="includes/foot :: foot"></th:block>
+<script>
+    function setSelect(id) {
+        var ls = $("#inputRole").find("option"); //获取select下拉框的所有值
+        for (var j = 1; j < ls.length; j++) {
+            if ($(ls[j]).val() == id) {
+                $(ls[j]).attr("selected", "selected");
+            }
+        }
+    };
+    App.initDropzone({
+        id: "#dropz",
+        url: "/upload",
+        init: function () {
+            this.on("success", function (file, data) {
+                $("#inputAvatar").val(data.fileName);
+            });
+        }
+    });
+</script>
+</body>
+</html>

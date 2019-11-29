@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 使用动态代理开发DAO，namespace必须和Mapper接口类路径一致 -->
+<mapper namespace="com.nic.ctFire.common.service.mapper.TbUserMapper">
+
+    <!--添加用户-->
+    <insert id="insert" parameterType="com.nic.ctFire.common.domain.TbUser">
+      insert into tb_user(id,username,password,email,role) value
+        (#{id},#{username},#{password},#{email},#{role})
+    </insert>
+
+    <!--删除用户-->
+    <update id="delete" parameterType="String">
+        update tb_user
+        set state = 0
+        where
+        id = #{id}
+    </update>
+
+    <!--批量删除用户-->
+    <update id="deleteMulti">
+        update tb_user
+        set state = 0
+        where id in
+        <!-- foreach标签，进行遍历 -->
+        <!-- collection：要遍历的集合(List<?>对象默认用list代替作为键，数组对象有array代替作为键，Map对象没有默认的键) -->
+        <!-- item：遍历的项目，可以随便写，，但是和后面的#{}里面要一致 -->
+        <!-- open：在前面添加的sql片段 -->
+        <!-- close：在结尾处添加的sql片段 -->
+        <!-- separator：指定遍历的元素之间使用的分隔符 -->
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <!--修改用户-->
+    <update id="update" parameterType="com.nic.ctFire.common.domain.TbUser">
+        update tb_user
+        <set>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="role!=null">
+                role = #{role},
+            </if>
+            <if test="logined != null">
+                logined = #{logined}
+            </if>
+        </set>
+        where
+        id = #{id}
+    </update>
+
+    <!--根据id查询用户-->
+    <select id="getById" parameterType="String" resultType="com.nic.ctFire.common.domain.TbUser">
+        select * from tb_user
+        where
+        id = #{id} and state != 0
+    </select>
+
+    <!--查询所有用户-->
+    <select id="selectAll" resultType="com.nic.ctFire.common.domain.TbUser">
+        select * from tb_user where state != 0
+    </select>
+
+    <!--条件查询代码块-->
+    <sql id="conditions">
+        <if test="entity != null">
+            <if test="entity.username != null and entity.username != ''">
+                and username like concat('%',#{entity.username},'%')
+            </if>
+            <if test="entity.role != null and entity.role != -1">
+                and role = #{entity.role}
+            </if>
+        </if>
+    </sql>
+
+    <!--分页查询用户-->
+    <select id="page" resultType="com.nic.ctFire.common.domain.TbUser">
+        select * from tb_user
+        where state != 0
+        <include refid="conditions"></include>
+        limit #{start},#{length}
+    </select>
+
+    <!--查询总数据条数-->
+    <select id="count" parameterType="com.nic.ctFire.common.domain.TbUser" resultType="int">
+        select count(*) from tb_user
+        where state != 0
+        <include refid="conditions"></include>
+    </select>
+
+    <!--根据用户名查询用户-->
+    <select id="getByName" parameterType="String" resultType="com.nic.ctFire.common.domain.TbUser">
+        select * from tb_user
+        where
+        username = #{username} and state != 0
+    </select>
+
+</mapper>

@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: ctFire-server-zuul
+
+server:
+  port: 8769
+
+zuul:
+  routes:
+    backend-user:
+      path: /backend/user/**
+      serviceId: ctFire-web-user
+    backend-device:
+      path: /backend/device/**
+      serviceId: ctFire-web-device
+

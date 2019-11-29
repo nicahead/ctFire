@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: ctFire-web-user
+
+server:
+  port: 8601

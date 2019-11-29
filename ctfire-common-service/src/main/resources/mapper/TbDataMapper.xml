@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 使用动态代理开发DAO，namespace必须和Mapper接口类路径一致 -->
+<mapper namespace="com.nic.ctFire.common.service.mapper.TbDataMapper">
+
+    <!--添加数据-->
+    <insert id="insert" parameterType="com.nic.ctFire.common.domain.TbData">
+      insert into tb_data(id,voltage,current,temper,did,state) value
+        (#{id},#{voltage},#{current},#{temper},#{did},#{state})
+    </insert>
+
+    <!--条件查询代码块-->
+    <sql id="conditions">
+            <if test="entity != null">
+                <if test="entity.did != null and entity.did != ''">
+                       and did = #{entity.did}
+                </if>
+                <if test="entity.state != null and entity.state != -1">
+                       and state = #{entity.state}
+                </if>
+            </if>
+    </sql>
+
+    <!--分页查询数据-->
+    <select id="page" resultType="com.nic.ctFire.common.domain.TbData">
+        select * from tb_data
+        where to_days(created) = to_days(now())
+        <include refid="conditions"></include>
+        ORDER BY created DESC
+        limit #{start},#{length}
+    </select>
+
+    <!--查询总数据条数-->
+    <select id="count" parameterType="com.nic.ctFire.common.domain.TbDevice" resultType="int">
+        select count(*) from tb_data
+        where to_days(created) = to_days(now())
+        <include refid="conditions"></include>
+    </select>
+
+</mapper>

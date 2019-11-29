@@ -1,0 +1,62 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body th:fragment="header">
+<header class="main-header">
+    <a href="/" class="logo">
+        <span class="logo-mini"><b>CF</b></span>
+        <span class="logo-lg"><b>ctFire</b></span>
+    </a>
+
+    <nav class="navbar navbar-static-top">
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">Toggle navigation</span>
+        </a>
+
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="dropdown user user-menu">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <span class="hidden-xs" th:text="${user.username}"></span>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <!--<li class="user-header">-->
+                            <!--<p>-->
+                                <!--<span th:text="${user.username}"></span>-->
+                                <!--&lt;!&ndash;<small th:text="${#dates.format(admin.createDate, 'yyyy-MM-dd HH:mm:ss')}"></small>&ndash;&gt;-->
+                            <!--</p>-->
+                        <!--</li>-->
+
+                        <li class="user-footer">
+                            <!--<div class="pull-left">-->
+                                <!--<a th:href="@{'/form?id='+${user.id}}" class="btn btn-default btn-flat">个人信息</a>-->
+                            <!--</div>-->
+                            <div class="pull-right">
+                                <a href="javascript:void(0);" onclick="logout()" class="btn btn-default btn-flat">注销</a>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<script>
+    function setCookie(cname, cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires="+ d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    }
+    function logout() {
+        setCookie("token", "", -1);
+        window.location.href="http://localhost:8503/logout?url=http://localhost:8603";
+    }
+</script>
+</body>
+</html>

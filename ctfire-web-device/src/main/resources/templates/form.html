@@ -1,0 +1,114 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ctFire>编辑设备</title>
+    <th:block th:include="includes/head :: head"></th:block>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+<section class="content-header">
+    <h1>
+        设备管理
+        <small th:text="${editDevice != null and editDevice.id != null ? '编辑设备' : '新增设备'}"></small>
+    </h1>
+</section>
+<!-- Main content -->
+<section class="content container-fluid">
+    <div class="col-md-12">
+        <!-- Horizontal Form -->
+        <div class="box box-info">
+            <th:block th:if="${baseResult!=null }">
+                <div class="alert alert-danger alert-dismissible" style="margin:15px 0 0 0">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                        &times;
+                    </button>
+                    <span th:text="${baseResult.success }"></span>
+                </div>
+            </th:block>
+            <form action="/save" method="post" class="form-horizontal" th:object="${editDevice}">
+                <input name="id" th:value="*{id}" type="hidden">
+                <div class="box-body">
+                    <div class="form-group">
+                        <label for="inputName" class="col-sm-2 control-label">设备名称(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="name" class="form-control"
+                                   id="inputName" th:value="*{name}"
+                                   placeholder="name">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputServer" class="col-sm-2 control-label">设备ip(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="server" class="form-control"
+                                   id="inputServer" placeholder="server" th:value="*{server}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPort" class="col-sm-2 control-label">设备端口(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="port" class="form-control"
+                                   id="inputPort" placeholder="server" th:value="*{port}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputLocated" class="col-sm-2 control-label">设备位置(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="located" class="form-control"
+                                   id="inputLocated" placeholder="located" th:value="*{located}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxVoltage" class="col-sm-2 control-label">电压最大值(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="maxVoltage" class="form-control"
+                                   id="maxVoltage" placeholder="maxVoltage" th:value="*{maxVoltage}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="minVoltage" class="col-sm-2 control-label">电压最小值(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="minVoltage" class="form-control"
+                                   id="minVoltage" placeholder="voltageScope" th:value="*{minVoltage}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxCurrent" class="col-sm-2 control-label">电流最大值(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="maxCurrent" class="form-control"
+                                   id="maxCurrent" placeholder="maxCurrent" th:value="*{maxCurrent}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="minCurrent" class="col-sm-2 control-label">电流最小值(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="minCurrent" class="form-control"
+                                   id="minCurrent" placeholder="minCurrent" th:value="*{minCurrent}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxTemper" class="col-sm-2 control-label">温度最大值(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="maxTemper" class="form-control"
+                                   id="maxTemper" placeholder="maxTemper" th:value="*{maxTemper}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="minTemper" class="col-sm-2 control-label">温度最小值(*)</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="minTemper" class="form-control"
+                                   id="minTemper" placeholder="minTemper" th:value="*{minTemper}">
+                        </div>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <button type="button" class="btn btn-default" onclick="history.go(-1)">取消</button>
+                    <button type="submit" class="btn btn-info pull-right">提交</button>
+                </div>
+                <!-- /.box-footer -->
+            </form>
+        </div>
+    </div>
+</section>
+<th:block th:include="includes/foot :: foot"></th:block>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+
+<body th:fragment="foot">
+<!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+<script th:src="@{{template}/bower_components/jquery/dist/jquery.js(template=${template})}"></script>
+<script th:src="@{{template}/bower_components/bootstrap/dist/js/bootstrap.min.js(template=${template})}"></script>
+<script th:src="@{{template}/bower_components/DataTables-1.10.15/media/js/jquery.dataTables.js(template=${template})}"></script>
+<script th:src="@{{template}/bower_components/DataTables-1.10.15/media/js/dataTables.bootstrap.js(template=${template})}"></script>
+<script th:src="@{{template}/dist/js/adminlte.min.js(template=${template})}"></script>
+<script th:src="@{{template}/plugins/iCheck/icheck.min.js(template=${template})}"></script>
+<script th:src="@{{template}/plugins/moment/moment.js(template=${template})}"></script>
+
+<script src="/js/app.js"></script>
+
+</body>
+</html>

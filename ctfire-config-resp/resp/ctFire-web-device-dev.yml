@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: ctFire-web-device
+
+server:
+  port: 8602

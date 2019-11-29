@@ -1,0 +1,7 @@
+spring:
+  cloud:
+    config:
+      uri: http://localhost:8888
+      name: ctFire-service-sso,ctFire-common-service,ctFire-common-web,ctFire-common-hosts,ctFire-client-admin,ctFire-client-eureka,ctFire-client-zipkin
+      label: master
+      profile: dev

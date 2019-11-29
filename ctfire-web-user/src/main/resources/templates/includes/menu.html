@@ -1,0 +1,42 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body th:fragment="menu">
+<aside class="main-sidebar">
+    <section class="sidebar">
+
+        <ul class="sidebar-menu" data-widget="tree">
+            <li class="header">功能菜单</li>
+            <li class="active treeview">
+                <a href="#">
+                    <i class="fa fa-users"></i> <span>用户管理</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li><a href="javascript:void(0);" id="btnUserList" onclick="show(this.id)"><i class="fa fa-circle-o"></i> 用户列表</a></li>
+                    <li><a href="javascript:void(0);" id="btnUserForm" onclick="show(this.id)"><i class="fa fa-circle-o"></i> 新增用户</a></li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+</aside>
+<script>
+
+    function show(id) {
+        var iFrame = document.getElementById("iFrame");
+        if (id == "btnUserList") {
+            iFrame.src = "/list";
+        }else if (id == "btnUserForm") {
+            iFrame.src = "/form";
+        }
+    }
+
+</script>
+</body>
+</html>
